@@ -1,0 +1,41 @@
+------------------------------------------------------------------------------
+README file for the sample keystores.
+------------------------------------------------------------------------------
+   DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
+  
+Copyright (c) 2008 Sun Microsystems Inc. All Rights Reserved
+  
+The contents of this file are subject to the terms
+of the Common Development and Distribution License
+(the License). You may not use this file except in
+compliance with the License.
+
+You can obtain a copy of the License at
+https://opensso.dev.java.net/public/CDDLv1.0.html or
+opensso/legal/CDDLv1.0.txt
+See the License for the specific language governing
+permission and limitations under the License.
+
+When distributing Covered Code, include this CDDL
+Header Notice in each file and include the License file
+at opensso/legal/CDDLv1.0.txt.
+If applicable, add the following below the CDDL Header,
+with the fields enclosed by brackets [] replaced by
+your own identifying information:
+"Portions Copyrighted [year] [name of copyright owner]"
+
+Portions copyright 2016 ForgeRock AS.
+
+------------------------------------------------------------------------------
+
+This directory contains sample JKS and JCEKS keystores. The JKS keystore will 
+be used as the default keystore after configuring the OpenAM WAR. 
+The JKS keystore contains one key entry with alias name "test". Keystore 
+password and key password for the entry are "changeit".
+The JCEKS keystore contains three key entries, one with alias name "test", 
+another with alias name "selfserviceenctest", and another with alias name
+"selfservicesigntest". Keystore password and key password for the entries are
+"changeit".
+
+keytool -list -v -keystore keystore.jks
+keytool -list -v -keystore keystore.jceks -storetype jceks

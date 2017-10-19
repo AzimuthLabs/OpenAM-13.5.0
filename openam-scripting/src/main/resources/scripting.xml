@@ -1,0 +1,495 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * The contents of this file are subject to the terms of the Common Development and
+ * Distribution License (the License). You may not use this file except in compliance with the
+ * License.
+ *
+ * You can obtain a copy of the License at legal/CDDLv1.0.txt. See the License for the
+ * specific language governing permission and limitations under the License.
+ *
+ * When distributing Covered Software, include this CDDL Header Notice in each file and include
+ * the License file at legal/CDDLv1.0.txt. If applicable, add the following below the CDDL
+ * Header, with the fields enclosed by brackets [] replaced by your own identifying
+ * information: "Portions copyright [year] [name of copyright owner]".
+ *
+ * Copyright 2015-2016 ForgeRock AS.
+-->
+<!DOCTYPE ServicesConfiguration
+    PUBLIC "=//iPlanet//Service Management Services (SMS) 1.0 DTD//EN" "jar://com/sun/identity/sm/sms.dtd">
+
+<ServicesConfiguration>
+    <Service name="ScriptingService" version="1.0">
+
+        <Schema serviceHierarchy="/DSAMEConfig/ScriptingService"
+                i18nFileName="scripting"
+                revisionNumber="1"
+                i18nKey="service-description"
+                resourceName="scripting">
+            <Global>
+                <AttributeSchema name="defaultScriptContext" i18nKey="g101" type="single_choice"
+                                 resourceName="defaultContext">
+                    <ChoiceValues>
+                        <ChoiceValue i18nKey="script-type-01">POLICY_CONDITION</ChoiceValue>
+                        <ChoiceValue i18nKey="script-type-02">AUTHENTICATION_SERVER_SIDE</ChoiceValue>
+                        <ChoiceValue i18nKey="script-type-03">AUTHENTICATION_CLIENT_SIDE</ChoiceValue>
+                        <ChoiceValue i18nKey="script-type-04">OIDC_CLAIMS</ChoiceValue>
+                    </ChoiceValues>
+                    <DefaultValues>
+                        <Value>POLICY_CONDITION</Value>
+                    </DefaultValues>
+                </AttributeSchema>
+                <SubSchema name="scriptContext" inheritance="multiple" resourceName="contexts">
+                    <AttributeSchema name="i18nKey" type="single"/>
+                    <AttributeSchema name="languages" type="multiple_choice" syntax="string" i18nKey="st101">
+                        <ChoiceValues>
+                            <ChoiceValue i18nKey="language-01">JAVASCRIPT</ChoiceValue>
+                            <ChoiceValue i18nKey="language-02">GROOVY</ChoiceValue>
+                        </ChoiceValues>
+                        <DefaultValues>
+                            <Value>JAVASCRIPT</Value>
+                            <Value>GROOVY</Value>
+                        </DefaultValues>
+                    </AttributeSchema>
+                    <AttributeSchema name="defaultScript" type="single_choice" uitype="globalScriptSelect"
+                                     propertiesViewBeanURL="../XUI/%23realms/{0}/scripts/edit/{1}" syntax="string"
+                                     i18nKey="st103">
+                        <ChoiceValues>
+                            <ChoiceValuesClassName
+                                    className="org.forgerock.openam.scripting.service.ScriptChoiceValues">
+                                <AttributeValuePair>
+                                    <Attribute name="GlobalOnly"/>
+                                    <Value>true</Value>
+                                </AttributeValuePair>
+                            </ChoiceValuesClassName>
+                        </ChoiceValues>
+                    </AttributeSchema>
+                    <SubSchema name="engineConfiguration" i18nKey="ec100">
+                        <AttributeSchema name="i18nKey" type="single">
+                            <DefaultValues>
+                                <Value>engine-configuration</Value>
+                            </DefaultValues>
+                        </AttributeSchema>
+                        <AttributeSchema name="serverTimeout"
+                                         type="single" syntax="number_range" rangeStart="0"
+                                         rangeEnd="2147483647" i18nKey="ec101">
+                            <DefaultValues>
+                                <Value>0</Value>
+                            </DefaultValues>
+                        </AttributeSchema>
+                        <AttributeSchema name="coreThreads"
+                                         type="single" syntax="number_range" rangeStart="1"
+                                         rangeEnd="2147483647" i18nKey="ec102">
+                            <DefaultValues>
+                                <Value>10</Value>
+                            </DefaultValues>
+                        </AttributeSchema>
+                        <AttributeSchema name="maxThreads"
+                                         type="single" syntax="number_range" rangeStart="1"
+                                         rangeEnd="2147483647" i18nKey="ec103">
+                            <DefaultValues>
+                                <Value>50</Value>
+                            </DefaultValues>
+                        </AttributeSchema>
+                        <AttributeSchema name="queueSize"
+                                         type="single" syntax="number_range" rangeStart="-1"
+                                         rangeEnd="2147483647" i18nKey="ec104">
+                            <DefaultValues>
+                                <Value>10</Value>
+                            </DefaultValues>
+                        </AttributeSchema>
+                        <AttributeSchema name="idleTimeout"
+                                         type="single" syntax="number_range" rangeStart="0"
+                                         rangeEnd="2147483647" i18nKey="ec105">
+                            <DefaultValues>
+                                <Value>60</Value>
+                            </DefaultValues>
+                        </AttributeSchema>
+                        <AttributeSchema name="whiteList"
+                                         type="list" syntax="string" i18nKey="ec106">
+                            <DefaultValues>
+                                <Value>java.lang.Boolean</Value>
+                                <Value>java.lang.Byte</Value>
+                                <Value>java.lang.Character</Value>
+                                <Value>java.lang.Character$Subset</Value>
+                                <Value>java.lang.Character$UnicodeBlock</Value>
+                                <Value>java.lang.Double</Value>
+                                <Value>java.lang.Float</Value>
+                                <Value>java.lang.Integer</Value>
+                                <Value>java.lang.Long</Value>
+                                <Value>java.lang.Math</Value>
+                                <Value>java.lang.Number</Value>
+                                <Value>java.lang.Object</Value>
+                                <Value>java.lang.Short</Value>
+                                <Value>java.lang.StrictMath</Value>
+                                <Value>java.lang.String</Value>
+                                <Value>java.lang.Void</Value>
+                                <Value>java.util.ArrayList</Value>
+                                <Value>java.util.HashSet</Value>
+                                <Value>java.util.HashMap</Value>
+                                <Value>java.util.HashMap$KeyIterator</Value>
+                                <Value>java.util.LinkedHashMap</Value>
+                                <Value>java.util.LinkedHashSet</Value>
+                                <Value>java.util.LinkedList</Value>
+                                <Value>java.util.TreeMap</Value>
+                                <Value>java.util.TreeSet</Value>
+                                <Value>com.sun.identity.shared.debug.Debug</Value>
+                                <Value>org.forgerock.http.client.*</Value>
+                                <Value>org.forgerock.http.Client</Value>
+                                <Value>org.forgerock.http.Handler</Value>
+                                <Value>org.forgerock.http.Context</Value>
+                                <Value>org.forgerock.http.context.RootContext</Value>
+                                <Value>org.forgerock.http.protocol.Request</Value>
+                                <Value>org.forgerock.http.protocol.Response</Value>
+                                <Value>org.forgerock.util.promise.NeverThrowsException</Value>
+                                <Value>org.forgerock.util.promise.Promise</Value>
+                                <Value>org.forgerock.openam.scripting.api.http.GroovyHttpClient</Value>
+                                <Value>org.forgerock.openam.scripting.api.http.JavaScriptHttpClient</Value>
+                                <Value>org.forgerock.openam.scripting.api.ScriptedIdentity</Value>
+                                <Value>org.forgerock.openam.scripting.api.ScriptedSession</Value>
+                                <Value>groovy.json.JsonSlurper</Value>
+                            </DefaultValues>
+                        </AttributeSchema>
+                        <AttributeSchema name="blackList"
+                                         type="list" syntax="string" i18nKey="ec107">
+                            <DefaultValues>
+                                <Value>java.security.AccessController</Value>
+                                <Value>java.lang.Class</Value>
+                                <Value>java.lang.reflect.*</Value>
+                            </DefaultValues>
+                        </AttributeSchema>
+                        <AttributeSchema name="useSecurityManager"
+                                         type="single" syntax="boolean" i18nKey="ec108">
+                            <BooleanValues>
+                                <BooleanTrueValue i18nKey="i18nTrue">true</BooleanTrueValue>
+                                <BooleanFalseValue i18nKey="i18nFalse">false</BooleanFalseValue>
+                            </BooleanValues>
+                            <DefaultValues>
+                                <Value>true</Value>
+                            </DefaultValues>
+                        </AttributeSchema>
+                    </SubSchema>
+                </SubSchema>
+                <SubSchema name="globalScripts" hideConfigUI="yes">
+                    <SubSchema name="globalScript" inheritance="multiple">
+                        <AttributeSchema name="name" type="single" syntax="string"/>
+                        <AttributeSchema name="description" type="single" syntax="string"/>
+                        <AttributeSchema name="context" type="single" syntax="string"/>
+                        <AttributeSchema name="language" type="single">
+                            <DefaultValues>
+                                <Value>JAVASCRIPT</Value>
+                            </DefaultValues>
+                        </AttributeSchema>
+                        <AttributeSchema name="script" type="single" syntax="script"/>
+                        <AttributeSchema name="createdBy" type="single" syntax="string">
+                            <DefaultValues>
+                                <Value>id=dsameuser,ou=user,dc=openam,dc=forgerock,dc=org</Value>
+                            </DefaultValues>
+                        </AttributeSchema>
+                        <AttributeSchema name="creationDate" type="single" syntax="string">
+                            <DefaultValues>
+                                <Value>1433147666269</Value>
+                            </DefaultValues>
+                        </AttributeSchema>
+                        <AttributeSchema name="lastModifiedBy" type="single" syntax="string">
+                            <DefaultValues>
+                                <Value>id=dsameuser,ou=user,dc=openam,dc=forgerock,dc=org</Value>
+                            </DefaultValues>
+                        </AttributeSchema>
+                        <AttributeSchema name="lastModifiedDate" type="single" syntax="string">
+                            <DefaultValues>
+                                <Value>1433147666269</Value>
+                            </DefaultValues>
+                        </AttributeSchema>
+                    </SubSchema>
+                </SubSchema>
+            </Global>
+            <Organization>
+                <SubSchema name="scriptConfigurations">
+                    <SubSchema name="scriptConfiguration" inheritance="multiple" resourceName="scripts"
+                               hideConfigUI="yes">
+                        <AttributeSchema name="name" type="single" syntax="string" i18nKey="no-i18n"/>
+                        <AttributeSchema name="description" type="single" syntax="string" i18nKey="no-i18n"/>
+                        <AttributeSchema name="script" type="single" syntax="script" i18nKey="no-i18n"/>
+                        <AttributeSchema name="language" type="single" syntax="string" i18nKey="no-i18n">
+                            <ChoiceValues>
+                                <ChoiceValue i18nKey="language-01">JAVASCRIPT</ChoiceValue>
+                                <ChoiceValue i18nKey="language-02">GROOVY</ChoiceValue>
+                            </ChoiceValues>
+                        </AttributeSchema>
+                        <AttributeSchema name="context" type="single" syntax="string" i18nKey="no-i18n">
+                            <ChoiceValues>
+                                <ChoiceValue i18nKey="script-type-01">POLICY_CONDITION</ChoiceValue>
+                                <ChoiceValue i18nKey="script-type-02">AUTHENTICATION_SERVER_SIDE</ChoiceValue>
+                                <ChoiceValue i18nKey="script-type-03">AUTHENTICATION_CLIENT_SIDE</ChoiceValue>
+                                <ChoiceValue i18nKey="script-type-04">OIDC_CLAIMS</ChoiceValue>
+                            </ChoiceValues>
+                        </AttributeSchema>
+                        <AttributeSchema name="createdBy" type="single" syntax="string" i18nKey="no-i18n"/>
+                        <AttributeSchema name="creationDate" type="single" syntax="string" i18nKey="no-i18n"/>
+                        <AttributeSchema name="lastModifiedBy" type="single" syntax="string" i18nKey="no-i18n"/>
+                        <AttributeSchema name="lastModifiedDate" type="single" syntax="string" i18nKey="no-i18n"/>
+                    </SubSchema>
+                </SubSchema>
+            </Organization>
+        </Schema>
+
+        <Configuration>
+            <GlobalConfiguration>
+                <SubConfiguration name="POLICY_CONDITION" id="scriptContext">
+                    <AttributeValuePair>
+                        <Attribute name="i18nKey"/>
+                        <Value>script-type-01</Value>
+                    </AttributeValuePair>
+                    <AttributeValuePair>
+                        <Attribute name="defaultScript"/>
+                        <Value>@GlobalEntitlementConditionScriptId@</Value>
+                    </AttributeValuePair>
+                    <SubConfiguration name="engineConfiguration" id="engineConfiguration"/>
+                </SubConfiguration>
+                <SubConfiguration name="AUTHENTICATION_SERVER_SIDE" id="scriptContext">
+                    <AttributeValuePair>
+                        <Attribute name="i18nKey"/>
+                        <Value>script-type-02</Value>
+                    </AttributeValuePair>
+                    <AttributeValuePair>
+                        <Attribute name="defaultScript"/>
+                        <Value>@GlobalServerSideAuthModuleScriptId@</Value>
+                    </AttributeValuePair>
+                    <SubConfiguration name="engineConfiguration" id="engineConfiguration">
+                        <AttributeValuePair>
+                            <Attribute name="whiteList"/>
+                            <Value>java.lang.Boolean</Value>
+                            <Value>java.lang.Byte</Value>
+                            <Value>java.lang.Character</Value>
+                            <Value>java.lang.Character$Subset</Value>
+                            <Value>java.lang.Character$UnicodeBlock</Value>
+                            <Value>java.lang.Double</Value>
+                            <Value>java.lang.Float</Value>
+                            <Value>java.lang.Integer</Value>
+                            <Value>java.lang.Long</Value>
+                            <Value>java.lang.Math</Value>
+                            <Value>java.lang.Number</Value>
+                            <Value>java.lang.Object</Value>
+                            <Value>java.lang.Short</Value>
+                            <Value>java.lang.StrictMath</Value>
+                            <Value>java.lang.String</Value>
+                            <Value>java.lang.Void</Value>
+                            <Value>java.util.ArrayList</Value>
+                            <Value>java.util.HashSet</Value>
+                            <Value>java.util.HashMap</Value>
+                            <Value>java.util.HashMap$KeyIterator</Value>
+                            <Value>java.util.LinkedHashMap</Value>
+                            <Value>java.util.LinkedHashSet</Value>
+                            <Value>java.util.LinkedList</Value>
+                            <Value>java.util.TreeMap</Value>
+                            <Value>java.util.TreeSet</Value>
+                            <Value>com.sun.identity.shared.debug.Debug</Value>
+                            <Value>org.forgerock.openam.authentication.modules.scripted.*</Value>
+                            <Value>org.forgerock.openam.scripting.api.http.GroovyHttpClient</Value>
+                            <Value>org.forgerock.openam.scripting.api.http.JavaScriptHttpClient</Value>
+                            <Value>org.forgerock.openam.scripting.api.ScriptedIdentity</Value>
+                            <Value>org.forgerock.openam.scripting.api.ScriptedSession</Value>
+                            <Value>org.forgerock.http.client.*</Value>
+                            <Value>groovy.json.JsonSlurper</Value>
+                        </AttributeValuePair>
+                    </SubConfiguration>
+                </SubConfiguration>
+                <SubConfiguration name="AUTHENTICATION_CLIENT_SIDE" id="scriptContext">
+                    <AttributeValuePair>
+                        <Attribute name="i18nKey"/>
+                        <Value>script-type-03</Value>
+                    </AttributeValuePair>
+                    <AttributeValuePair>
+                        <Attribute name="languages"/>
+                        <Value>JAVASCRIPT</Value>
+                    </AttributeValuePair>
+                    <AttributeValuePair>
+                        <Attribute name="defaultScript"/>
+                        <Value>@NoScriptDefined@</Value>
+                    </AttributeValuePair>
+                </SubConfiguration>
+                <SubConfiguration name="OIDC_CLAIMS" id="scriptContext">
+                    <AttributeValuePair>
+                        <Attribute name="i18nKey"/>
+                        <Value>script-type-04</Value>
+                    </AttributeValuePair>
+                    <AttributeValuePair>
+                        <Attribute name="defaultScript"/>
+                        <Value>@GlobalOidcClaimsScriptId@</Value>
+                    </AttributeValuePair>
+                    <SubConfiguration name="engineConfiguration" id="engineConfiguration">
+                        <AttributeValuePair>
+                            <Attribute name="whiteList"/>
+                            <Value>java.lang.Boolean</Value>
+                            <Value>java.lang.Byte</Value>
+                            <Value>java.lang.Character</Value>
+                            <Value>java.lang.Character$Subset</Value>
+                            <Value>java.lang.Character$UnicodeBlock</Value>
+                            <Value>java.lang.Double</Value>
+                            <Value>java.lang.Float</Value>
+                            <Value>java.lang.Integer</Value>
+                            <Value>java.lang.Long</Value>
+                            <Value>java.lang.Math</Value>
+                            <Value>java.lang.Number</Value>
+                            <Value>java.lang.Object</Value>
+                            <Value>java.lang.Short</Value>
+                            <Value>java.lang.StrictMath</Value>
+                            <Value>java.lang.String</Value>
+                            <Value>java.lang.Void</Value>
+                            <Value>java.util.ArrayList</Value>
+                            <Value>java.util.HashSet</Value>
+                            <Value>java.util.HashMap</Value>
+                            <Value>java.util.HashMap$Entry</Value>
+                            <Value>java.util.HashMap$KeyIterator</Value>
+                            <Value>java.util.LinkedHashMap</Value>
+                            <Value>java.util.LinkedHashSet</Value>
+                            <Value>java.util.LinkedList</Value>
+                            <Value>java.util.TreeMap</Value>
+                            <Value>java.util.TreeSet</Value>
+                            <Value>com.sun.identity.shared.debug.Debug</Value>
+                            <Value>com.iplanet.sso.providers.dpro.SSOTokenImpl</Value>
+                            <Value>org.forgerock.http.client.*</Value>
+                            <Value>groovy.json.JsonSlurper</Value>
+                            <Value>com.sun.identity.idm.AMIdentity</Value>
+                            <Value>java.util.LinkedHashMap$Entry</Value>
+                            <Value>java.util.LinkedHashMap$LinkedEntrySet</Value>
+                            <Value>org.forgerock.openam.oauth2.OpenAMAccessToken</Value>
+                            <Value>java.util.HashMap$Node</Value>
+                            <Value>org.forgerock.oauth2.core.UserInfoClaims</Value>
+                            <Value>org.codehaus.groovy.runtime.GStringImpl</Value>
+                            <Value>org.forgerock.openam.sso.providers.stateless.StatelessSSOToken</Value>
+                        </AttributeValuePair>
+                    </SubConfiguration>
+                </SubConfiguration>
+                <SubConfiguration name="globalScripts" id="globalScripts">
+                    <SubConfiguration name="@GlobalEntitlementConditionScriptId@" id="globalScript">
+                        <AttributeValuePair>
+                            <Attribute name="name"/>
+                            <Value>Scripted Policy Condition</Value>
+                        </AttributeValuePair>
+                        <AttributeValuePair>
+                            <Attribute name="description"/>
+                            <Value>Default global script for Scripted Policy Conditions</Value>
+                        </AttributeValuePair>
+                        <AttributeValuePair>
+                            <Attribute name="context"/>
+                            <Value>POLICY_CONDITION</Value>
+                        </AttributeValuePair>
+                        <AttributeValuePair>
+                            <Attribute name="script"/>
+                            <Value>
+                                ${inject.content.policy-condition-js}
+                            </Value>
+                        </AttributeValuePair>
+                    </SubConfiguration>
+                    <SubConfiguration name="@GlobalServerSideAuthModuleScriptId@" id="globalScript">
+                        <AttributeValuePair>
+                            <Attribute name="name"/>
+                            <Value>Scripted Module - Server Side</Value>
+                        </AttributeValuePair>
+                        <AttributeValuePair>
+                            <Attribute name="description"/>
+                            <Value>Default global script for server side Scripted Authentication Module</Value>
+                        </AttributeValuePair>
+                        <AttributeValuePair>
+                            <Attribute name="context"/>
+                            <Value>AUTHENTICATION_SERVER_SIDE</Value>
+                        </AttributeValuePair>
+                        <AttributeValuePair>
+                            <Attribute name="script"/>
+                            <Value>
+                                ${inject.content.authentication-server-side-javascript}
+                            </Value>
+                        </AttributeValuePair>
+                    </SubConfiguration>
+                    <SubConfiguration name="@GlobalClientSideAuthModuleScriptId@" id="globalScript">
+                        <AttributeValuePair>
+                            <Attribute name="name"/>
+                            <Value>Scripted Module - Client Side</Value>
+                        </AttributeValuePair>
+                        <AttributeValuePair>
+                            <Attribute name="description"/>
+                            <Value>Default global script for client side Scripted Authentication Module</Value>
+                        </AttributeValuePair>
+                        <AttributeValuePair>
+                            <Attribute name="context"/>
+                            <Value>AUTHENTICATION_CLIENT_SIDE</Value>
+                        </AttributeValuePair>
+                        <AttributeValuePair>
+                            <Attribute name="script"/>
+                            <Value>
+                                ${inject.content.authentication-client-side-javascript}
+                            </Value>
+                        </AttributeValuePair>
+                    </SubConfiguration>
+                    <SubConfiguration name="@GlobalServerSideDeviceIdMatchScriptId@" id="globalScript">
+                        <AttributeValuePair>
+                            <Attribute name="name"/>
+                            <Value>Device Id (Match) - Server Side</Value>
+                        </AttributeValuePair>
+                        <AttributeValuePair>
+                            <Attribute name="description"/>
+                            <Value>Default global script for server side Device Id (Match) Authentication Module</Value>
+                        </AttributeValuePair>
+                        <AttributeValuePair>
+                            <Attribute name="context"/>
+                            <Value>AUTHENTICATION_SERVER_SIDE</Value>
+                        </AttributeValuePair>
+                        <AttributeValuePair>
+                            <Attribute name="script"/>
+                            <Value>
+                                ${inject.content.deviceIdMatch-server-js}
+                            </Value>
+                        </AttributeValuePair>
+                    </SubConfiguration>
+                    <SubConfiguration name="@GlobalClientSideDeviceIdMatchScriptId@" id="globalScript">
+                        <AttributeValuePair>
+                            <Attribute name="name"/>
+                            <Value>Device Id (Match) - Client Side</Value>
+                        </AttributeValuePair>
+                        <AttributeValuePair>
+                            <Attribute name="description"/>
+                            <Value>Default global script for client side Device Id (Match) Authentication Module</Value>
+                        </AttributeValuePair>
+                        <AttributeValuePair>
+                            <Attribute name="context"/>
+                            <Value>AUTHENTICATION_CLIENT_SIDE</Value>
+                        </AttributeValuePair>
+                        <AttributeValuePair>
+                            <Attribute name="script"/>
+                            <Value>
+                                ${inject.content.fontdetector}
+                                ${inject.content.deviceIdMatch-client-js}
+                            </Value>
+                        </AttributeValuePair>
+                    </SubConfiguration>
+                    <SubConfiguration name="@GlobalOidcClaimsScriptId@" id="globalScript">
+                        <AttributeValuePair>
+                            <Attribute name="name"/>
+                            <Value>OIDC Claims Script</Value>
+                        </AttributeValuePair>
+                        <AttributeValuePair>
+                            <Attribute name="description"/>
+                            <Value>Default global script for OIDC claims</Value>
+                        </AttributeValuePair>
+                        <AttributeValuePair>
+                            <Attribute name="context"/>
+                            <Value>OIDC_CLAIMS</Value>
+                        </AttributeValuePair>
+                        <AttributeValuePair>
+                            <Attribute name="language"/>
+                            <Value>GROOVY</Value>
+                        </AttributeValuePair>
+                        <AttributeValuePair>
+                            <Attribute name="script"/>
+                            <Value>
+                                ${inject.content.oidc-claims-extension-groovy}
+                            </Value>
+                        </AttributeValuePair>
+                    </SubConfiguration>
+                </SubConfiguration>
+            </GlobalConfiguration>
+        </Configuration>
+
+    </Service>
+</ServicesConfiguration>

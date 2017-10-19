@@ -1,0 +1,62 @@
+{
+  "access": {
+    "schema": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "id": "/",
+      "type": "object",
+      "properties": {
+        "component": {
+          "type": "string"
+        },
+        "realm": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "activity": {
+    "schema": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "id": "/",
+      "type": "object",
+      "properties": {
+        "component": {
+          "type": "string"
+        },
+        "realm": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "authentication": {
+    "schema": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "id": "/",
+      "type": "object",
+      "properties": {
+        "component": {
+          "type": "string"
+        },
+        "realm": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "config": {
+    "schema": {
+      "$schema": "http://json-schema.org/draft-04/schema#",
+      "id": "/",
+      "type": "object",
+      "properties": {
+        "component": {
+          "type": "string"
+        },
+        "realm": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
